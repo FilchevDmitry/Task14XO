@@ -50,12 +50,12 @@ bool winner(char field[][3], char sym)
 			return true;
 	}
 	e = 0;
-	for (int i = 3; i >= 0; i--)
+	for (int i = 2,k=0; i >= 0; --i,++k)
 	{
-		if (field[i][i] == sym)
-			e++;
-		if (e == 3)
-			return true;
+			if (field[i][k] == sym)
+				e++;
+			if (e == 3)
+				return true;		
 	}
 	return false;
 }
