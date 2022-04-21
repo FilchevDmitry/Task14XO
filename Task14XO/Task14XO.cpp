@@ -23,38 +23,37 @@ bool checkingInput(char field[][3], int x, int y)
 }
 bool winner(char field[][3], char sym)
 {
-	int w = 0;
-	int e = 0;
+	int col = 0;
+	int row = 0;
 	for (size_t i = 0; i < 3; i++)
 	{
 		for (size_t j = 0; j < 3; j++)
 		{
 			if (field[i][j] == sym)
-				e++;
+				row++;
 			if (field[j][i] == sym)
-				w++;
-			if (e == 3)
+				col++;
+			if (row == 3)
 				return true;
-			if (w == 3)
+			if (col == 3)
 				return true;
 		}
-		e = 0;
-		w = 0;
+		row = 0;
+		col = 0;
 	}
-	e = 0;
 	for (size_t i = 0; i < 3; i++)
 	{
 		if (field[i][i] == sym)
-			e++;
-		if (e == 3)
+			row++;
+		if (row == 3)
 			return true;
 	}
-	e = 0;
+	row = 0;
 	for (int i = 2,k=0; i >= 0; --i,++k)
 	{
 			if (field[i][k] == sym)
-				e++;
-			if (e == 3)
+				row++;
+			if (row == 3)
 				return true;		
 	}
 	return false;
@@ -62,6 +61,7 @@ bool winner(char field[][3], char sym)
 int game()
 {
 	int m = 0;
+	int nobody = 0;
 	const int X = 3;
 	const int Y = 3;
 	char field[X][Y];
@@ -81,7 +81,9 @@ int game()
 		bool checking = true;
 		print(field);
 		if (moveTransition)
-		{	
+		{
+			if (nobody >= 9)
+				return 0;
 			while (checking)
 			{
 				cout << "Enter the coordinates X ( X (1-3), Y (1-3)) ";
@@ -95,16 +97,19 @@ int game()
 				else
 				checking = false;
 			}
-				field[x][y] = 'X';
-				moveTransition = false;
-				if (winner(field, 'X'))
-				{
-					m = 1;
-					return m;
-				}
+			field[x][y] = 'X';
+			moveTransition = false;
+			if (winner(field, 'X'))
+			{
+				m = 1;
+				return m;
+			}
+			nobody++;
 		}
 		else 
 		{	
+			if (nobody >= 9)
+				return 0;
 			while (checking)
 			{
 				cout << "Enter the coordinates O ( X (1-3), Y (1-3)) ";
@@ -118,25 +123,25 @@ int game()
 				else
 					checking = false;
 			}
-				field[x][y] = 'O';
-				moveTransition = true;
-				if (winner(field, 'O'))
-				{
-					m = -1;
-					return m;
-				}
+			field[x][y] = 'O';
+			moveTransition = true;
+			if (winner(field, 'O'))
+			{
+				m = -1;
+				return m;
+			}
+			nobody++;
 		}
 	}
 	return m;
 }
-
 int main()
 {   
 	int win = game();
-	if (win = 1)
-		cout << "X WIN" << endl;
-	else if (win = -1)
-		cout << "O WIN" << endl;
+	if (win == 1)
+		cout << endl<<"X WIN" << endl;
+	else if (win == -1)
+		cout <<endl<< "O WIN" << endl;
 	else
-		cout << "NOBODI" << endl;
+		cout <<endl<< "NOBODI" << endl;
 }
